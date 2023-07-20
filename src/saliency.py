@@ -67,3 +67,5 @@ if __name__ == '__main__':
         'sub-4750MASZ_ses-20080220_space-MNI_mprageGd.nii.gz'
     result = compute_saliency(my_nifti_input)
     print(result)
+    print(type(result))
+    print(result.max())
