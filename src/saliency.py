@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 import torch.utils.data
 import torchio as tio
@@ -62,9 +64,7 @@ def compute_saliency(nifti_input):
 
 
 if __name__ == '__main__':
-    my_nifti_input = \
-        '/home/feczk001/shared/projects/S1067_Loes/data/MNI-space_Loes_data/' \
-        'sub-4750MASZ_ses-20080220_space-MNI_mprageGd.nii.gz'
+    my_nifti_input = sys.argv[1]
     result = compute_saliency(my_nifti_input)
     print(result)
     print(type(result))
