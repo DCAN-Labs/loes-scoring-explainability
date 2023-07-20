@@ -1,13 +1,11 @@
 #!/bin/bash -l
 #SBATCH --job-name=captum
-#SBATCH --time=1:00:00
+#SBATCH --time=0:15:00
 #SBATCH -p v100
 #SBATCH --gres=gpu:v100:2
 #SBATCH --ntasks=6               # total number of tasks across all nodes
 #SBATCH --output=captum-%j.out
 #SBATCH --error=captum-%j.err
-
-# Uses tio.transforms.RandomBiasField
 
 pwd; hostname; date
 echo jobid="${SLURM_JOB_ID}"; echo nodelist="${SLURM_JOB_NODELIST}"
@@ -19,6 +17,6 @@ eval "$__conda_setup"
 
 echo CUDA_VISIBLE_DEVICES: "$CUDA_VISIBLE_DEVICES"
 
-cd /home/miran045/reine097/projects/MyCaptum/ || exit
-export PYTHONPATH=PYTHONPATH:"/home/miran045/reine097/projects/MyCaptum/src"
-/home/miran045/reine097/projects/MyCaptum/venv/bin/python /home/miran045/reine097/projects/MyCaptum/src/my_captum_test.py
+cd /home/miran045/reine097/projects/loes-scoring-explainability || exit
+export PYTHONPATH=PYTHONPATH:"/home/miran045/reine097/projects/loes-scoring-explainability/src"
+/home/miran045/reine097/projects/loes-scoring-explainability/venv/bin/python /home/miran045/reine097/projects/loes-scoring-explainability/src/my_captum_test.py
