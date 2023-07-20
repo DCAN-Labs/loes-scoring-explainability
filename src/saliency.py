@@ -56,7 +56,7 @@ def compute_saliency(nifti_input):
 
     saliency = Saliency(wrapped_model)
     grads = saliency.attribute(img_input)
-    grads = np.transpose(grads.squeeze().cpu().detach().numpy(), (1, 2, 0))
+    grads = grads.squeeze().cpu().detach().numpy()
 
     return grads
 
