@@ -14,9 +14,6 @@ def normalize_array(array):
 
 
 net = AlexNet3D(4608)
-model_save_location = '/home/miran045/reine097/projects/loes-scoring-explainability/models/loes_scoring_03.pt'
-net.load_state_dict(torch.load(model_save_location,
-                               map_location='cpu'))
 net.eval()
 
 example_file = \
@@ -34,7 +31,8 @@ with torch.no_grad():
     print(output)
 
 print("Using existing trained model")
-net.load_state_dict(torch.load('models/loes_scoring_03.pt'))
+net.load_state_dict(torch.load('models/loes_scoring_03.pt',
+                               map_location='cpu'))
 
 csv_data_file = "./data/MNI-space_Loes_data.csv"
 testset = LoesScoreDataset(
