@@ -54,15 +54,6 @@ input.requires_grad = True
 
 net.eval()
 
-def attribute_image_features(algorithm, input, **kwargs):
-    net.zero_grad()
-    tensor_attributions = algorithm.attribute(input,
-                                              target=labels[ind],
-                                              **kwargs
-                                              )
-
-    return tensor_attributions
-
 def wrapped_model(inp):
     return net(inp)[0]
 
