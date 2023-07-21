@@ -1,6 +1,6 @@
 # loes-scoring-explainability
 
-This program creates a saliency NIFTI file showing the degrees of saliency of the input anatomical file.
+This program creates a saliency NIFTI file showing the degrees of saliency in calculating the Loes score of the input anatomical file.
 
 The program takes two arguments:
 * input: the file path of the input NIFTI file
