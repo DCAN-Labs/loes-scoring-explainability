@@ -1,3 +1,5 @@
+# Authors: Anders Perrone and Paul Reiners
+
 import gzip
 import os
 import shutil
