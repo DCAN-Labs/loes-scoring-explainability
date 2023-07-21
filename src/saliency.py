@@ -1,9 +1,13 @@
 import sys
+import time
 
-import numpy as np
 import torch.utils.data
 import torchio as tio
 from captum.attr import Saliency
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import nibabel as nib
 
 from dcan.data_sets.dsets import LoesScoreDataset
 from reprex.models import AlexNet3D
@@ -69,3 +73,22 @@ if __name__ == '__main__':
     print(result)
     print(type(result))
     print(result.max())
+    size = len(result)
+    img = nib.load(my_nifti_input)
+    image_data = img.get_fdata()
+    fig = plt.figure()
+    for j in range(3):
+        for i in range(0, size, 5):
+            print(f'axis: {j}; slice: {i}')
+            cross_section = result[i]
+
+            plt.imshow(cross_section, cmap='hot', interpolation='nearest')
+            plt.imshow(image_data[i], 'gray', interpolation='none', alpha=0.5)
+            plt.show()
+
+            time.sleep(2)
+            plt.clf()
+
+        result = np.transpose(result, (1, 2, 0))
+        image_data = np.transpose(image_data, (1, 2, 0))
+        size = len(result)
