@@ -1,0 +1,11 @@
+torch~=1.10.2
+torchio~=0.18.76
+dataclasses~=0.8
+numpy~=1.19.5
+tensorflow~=2.6.2
+captum~=0.6.0
+nibabel~=3.2.2
+Pillow~=8.4.0
+matplotlib~=3.3.4
+cassandra-driver~=3.26.0
+diskcache~=5.6.1

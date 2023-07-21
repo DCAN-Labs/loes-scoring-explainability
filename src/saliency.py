@@ -1,13 +1,13 @@
+import gzip
+import os
+import shutil
 import sys
-import time
 
+import nibabel as nib
+import numpy as np
 import torch.utils.data
 import torchio as tio
 from captum.attr import Saliency
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-import nibabel as nib
 
 from dcan.data_sets.dsets import LoesScoreDataset
 from reprex.models import AlexNet3D
@@ -69,26 +69,17 @@ def compute_saliency(nifti_input):
 
 if __name__ == '__main__':
     my_nifti_input = sys.argv[1]
-    result = compute_saliency(my_nifti_input)
-    print(result)
-    print(type(result))
-    print(result.max())
-    size = len(result)
     img = nib.load(my_nifti_input)
-    image_data = img.get_fdata()
-    fig = plt.figure()
-    for j in range(3):
-        for i in range(0, size, 5):
-            print(f'axis: {j}; slice: {i}')
-            cross_section = result[i]
-
-            plt.imshow(cross_section, cmap='hot', interpolation='nearest')
-            plt.imshow(image_data[i], 'gray', interpolation='none', alpha=0.5)
-            plt.show()
-
-            time.sleep(2)
-            plt.clf()
-
-        result = np.transpose(result, (1, 2, 0))
-        image_data = np.transpose(image_data, (1, 2, 0))
-        size = len(result)
+    saliency_output_file_path = sys.argv[2]
+    shutil.copyfile(my_nifti_input, saliency_output_file_path)
+    array_data = compute_saliency(my_nifti_input)
+    normalized_vector = array_data / np.linalg.norm(array_data)
+    scaled_vector = np.dot(normalized_vector, 256)
+    affine = img.affine
+    array_img = nib.Nifti1Image(scaled_vector, affine)
+    nii_out_file = saliency_output_file_path[:-3]
+    nib.save(array_img, nii_out_file)
+    with open(nii_out_file, 'rb') as f_in:
+        with gzip.open(saliency_output_file_path, 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+    os.remove(nii_out_file)
