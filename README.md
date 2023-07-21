@@ -15,3 +15,5 @@ There is a virtual environment here that contains all the necessary dependencies
 */home/miran045/reine097/projects/loes-scoring-explainability/venv*
 
 The output NIFTI saliency map can be used as an overlay for the original NIFTI file and be viewed in a NIFTI viewer such as FSLeyes.
+
+![saliency](./img/saliency.png)
