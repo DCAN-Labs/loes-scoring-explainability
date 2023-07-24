@@ -8,13 +8,14 @@ A baseline approach for computing input attribution. It returns absolute values 
 More details about the approach can be found in the following paper:
 [https://arxiv.org/abs/1312.6034](https://arxiv.org/abs/1312.6034)
 
-The program takes two arguments:
+The program takes three arguments:
 * input: the file path of the input NIFTI file
+* input: the file path of the model file
 * output: the file path of the saliency NIFTI file to be created
 
 Here is an example invocation:
 
-`python saliency.py input.nii.gz output.nii.gz`
+`python saliency.py input.nii.gz output.nii.gz loes_scoring_03.pt`
 
 There is a virtual environment here that contains all the necessary dependencies:
 
