@@ -31,6 +31,7 @@ def compute_saliency(nifti_input):
 
     image_tensor = torch.unsqueeze(image_tensor, dim=0)
     image_tensor = normalize_array(image_tensor)
+    image_tensor.requires_grad = True
 
     net.load_state_dict(torch.load('models/loes_scoring_03.pt',
                                    map_location='cpu'))
