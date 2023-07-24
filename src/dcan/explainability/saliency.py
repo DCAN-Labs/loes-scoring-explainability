@@ -14,7 +14,7 @@ from captum.attr import Saliency
 from reprex.models import AlexNet3D
 
 
-def compute_saliency(nifti_input):
+def compute_saliency(nifti_input, model):
     def normalize_array(array):
         new_array = \
             torch.subtract(array, torch.min(array)) / \
@@ -33,7 +33,7 @@ def compute_saliency(nifti_input):
     image_tensor = normalize_array(image_tensor)
     image_tensor.requires_grad = True
 
-    net.load_state_dict(torch.load('models/loes_scoring_03.pt',
+    net.load_state_dict(torch.load(model,
                                    map_location='cpu'))
 
     net.eval()
@@ -52,8 +52,9 @@ if __name__ == '__main__':
     my_nifti_input = sys.argv[1]
     img = nib.load(my_nifti_input)
     saliency_output_file_path = sys.argv[2]
+    model_file_path = sys.argv[3]
     shutil.copyfile(my_nifti_input, saliency_output_file_path)
-    array_data = compute_saliency(my_nifti_input)
+    array_data = compute_saliency(my_nifti_input, model_file_path)
     normalized_vector = array_data / np.linalg.norm(array_data)
     scaled_vector = np.dot(normalized_vector, 256)
     affine = img.affine
