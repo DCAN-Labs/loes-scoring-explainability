@@ -3,3 +3,6 @@ data-unversioned/
 models/
 runs/
 /data/MNI-space_Loes_data.csv
+/data/MNI-space_Loes_data_saliency_descending.csv
+/data/MNI-space_Loes_data_test.csv
+/data/MNI-space_Loes_data_with_saliencies.csv

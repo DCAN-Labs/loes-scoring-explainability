@@ -6,7 +6,8 @@ The [Captum library](https://captum.ai/api/saliency.html) is used for this.
 A baseline approach for computing input attribution. It returns absolute values of the gradients with respect to inputs. 
 
 More details about the approach can be found in the following paper:
-[https://arxiv.org/abs/1312.6034](https://arxiv.org/abs/1312.6034)
+[Deep Inside Convolutional Networks: Visualising Image Classification Models and Saliency Maps](https://arxiv.org/abs/1312.6034)
+by Karen Simonyan, Andrea Vedaldi, and Andrew Zisserman.
 
 The program takes three arguments:
 * input: the file path of the input NIFTI file
