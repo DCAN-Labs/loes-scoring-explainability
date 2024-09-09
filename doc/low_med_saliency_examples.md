@@ -7,6 +7,8 @@ Saliency example files
 Low Loes score example
 ----------------------
 
+![Low score](./img/low_saliency.png "Loews score and prediction")
+
 * Original MRI file
   * `/home/feczk001/shared/projects/S1067_Loes/data/MNI-space_Loes_data/sub-7151DOBU_ses-20170303_space-MNI_mprage.nii.gz`
 * Saliency file
@@ -29,6 +31,8 @@ Low Loes score example
 Medium Loes score example
 ----------------------
 
+![Med score](./img/med_saliency.png "Loews score and prediction")
+
 * Original MRI file
   * `/home/feczk001/shared/projects/S1067_Loes/data/MNI-space_Loes_data/sub-6605ALCA_ses-20160824_space-MNI_mprageGd.nii.gz` 
 * Saliency file
@@ -50,6 +54,8 @@ Medium Loes score example
 
 High Loes score example
 -----------------------
+
+![High score](./img/high_saliency.png "Loews score and prediction")
 
 * Original MRI file
   * `/home/feczk001/shared/projects/S1067_Loes/data/MNI-space_Loes_data/sub-6630SICH_ses-20160727_space-MNI_mprageGd.nii.gz` 
