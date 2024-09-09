@@ -8,7 +8,6 @@ import os
 df = pd.read_csv('doc/output.csv')
 df = df.reset_index()  
 
-max = 0
 for index, row in df.iterrows():
     file = row['file']
     example_filename = file
@@ -18,6 +17,8 @@ for index, row in df.iterrows():
     plt.hist(data.flatten(), bins='auto')  
     image_file = file.split('/')[-1]
     image_file = image_file[:-7]
-    plt.title(image_file)
-    plt.show()
-    plt.savefig(os.path.join('img/histograms', f'{image_file}.png'))
+    if row['validation'] == 1:
+        plt.suptitle(f"loes-score: {row['loes-score']}; prediction: {row['prediction']}")
+        plt.title(image_file)
+        plt.savefig(os.path.join('img/histograms', f'{image_file}.png'))
+        plt.show()
