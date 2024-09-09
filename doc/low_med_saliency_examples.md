@@ -1,4 +1,4 @@
-Saliency example files
+Example saliency files
 ======================
 
 * Location of saliency maps
