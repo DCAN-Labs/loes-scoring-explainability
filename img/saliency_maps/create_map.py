@@ -1,13 +1,19 @@
 import numpy as np
 import nibabel as nib
-import os
+import pandas as pd
 import matplotlib.pyplot as plt
 
 
-data_path = '/home/feczk001/shared/projects/S1067_Loes/data/MNI-space_Loes_data_saliency/'
-example_filename = os.path.join(data_path, 'sub-4750MASZ_ses-20071005_space-MNI_mprage_salience.nii.gz')
-img = nib.load(example_filename)
-data = img.get_fdata()
-plt.hist(data.flatten(), bins='auto')  
-plt.title("Histogram with 'auto' bins")
-plt.show()
+df = pd.read_csv('doc/output.csv')
+df = df.reset_index()  
+
+max = 0
+for index, row in df.iterrows():
+    file = row['file']
+    example_filename = file
+    img = nib.load(example_filename)
+    data = img.get_fdata()
+    scaled_data = np.divide(np.multiply(256, data), 2072.0)
+    plt.hist(data.flatten(), bins='auto')  
+    plt.title(file)
+    plt.show()
