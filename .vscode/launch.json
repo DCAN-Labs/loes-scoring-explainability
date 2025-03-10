@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "saliency",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/dcan/explainability/saliency.py",
+            "console": "integratedTerminal",
+            "args": ["/home/feczk001/shared/projects/S1067_Loes/data/Fairview-ag/05-training_ready/subject-00_session-00_space-MNI_brain_mprage_RAVEL.nii.gz",
+                     "/home/feczk001/shared/projects/S1067_Loes/data/Fairview-ag/saliency-maps/subject-00_session-00_space-MNI_brain_mprage_RAVEL.nii.gz",
+                     "/home/feczk001/shared/data/LoesScoring/loes_scoring_20.pt"],
+                     "env": {"PYTHONPATH":"/users/9/reine097/projects/loes-scoring-2/src"}
+        }
+    ]
+}

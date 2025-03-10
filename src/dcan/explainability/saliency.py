@@ -5,13 +5,13 @@ import os
 import shutil
 import sys
 
+from dcan.models.ResNet import get_resnet_model
+
 import nibabel as nib
 import numpy as np
 import torch.utils.data
 import torchio as tio
 from captum.attr import Saliency
-
-from reprex.models import AlexNet3D
 
 
 def normalize_array(array):
@@ -23,7 +23,7 @@ def normalize_array(array):
 
 
 def compute_saliency(nifti_input, model):
-    net = AlexNet3D(4608)
+    net = get_resnet_model()
     net.eval()
 
     img = tio.ScalarImage(nifti_input)
@@ -61,13 +61,20 @@ def create_nifti(img, scaled_vector, saliency_output_file_name):
     return nii_out_file
 
 
-if __name__ == '__main__':
-    my_nifti_input = sys.argv[1]
-    image = nib.load(my_nifti_input)
-    saliency_output_file_path = sys.argv[2]
-    model_file_path = sys.argv[3]
+def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_path):
+    image = nib.load(nifti_input)
+    salience_output_directory_path = os.path.dirname(saliency_output_file_path)
+    os.makedirs(salience_output_directory_path, exist_ok=True)
     shutil.copyfile(my_nifti_input, saliency_output_file_path)
     array_data = compute_saliency(my_nifti_input, model_file_path)
     normalized_vector = array_data / np.linalg.norm(array_data)
     nii_out_fl = create_nifti(image, np.dot(normalized_vector, 256), saliency_output_file_path)
     os.remove(nii_out_fl)
+
+
+if __name__ == '__main__':
+    my_nifti_input = sys.argv[1]
+    saliency_output_file_path = sys.argv[2]
+    model_file_path = sys.argv[3]
+    
+    create_saliency_nifti(my_nifti_input, saliency_output_file_path, model_file_path)
