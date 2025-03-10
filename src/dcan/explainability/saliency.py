@@ -65,8 +65,8 @@ def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_pat
     image = nib.load(nifti_input)
     salience_output_directory_path = os.path.dirname(saliency_output_file_path)
     os.makedirs(salience_output_directory_path, exist_ok=True)
-    shutil.copyfile(my_nifti_input, saliency_output_file_path)
-    array_data = compute_saliency(my_nifti_input, model_file_path)
+    shutil.copyfile(nifti_input, saliency_output_file_path)
+    array_data = compute_saliency(nifti_input, model_file_path)
     normalized_vector = array_data / np.linalg.norm(array_data)
     nii_out_fl = create_nifti(image, np.dot(normalized_vector, 256), saliency_output_file_path)
     os.remove(nii_out_fl)
@@ -76,5 +76,5 @@ if __name__ == '__main__':
     my_nifti_input = sys.argv[1]
     saliency_output_file_path = sys.argv[2]
     model_file_path = sys.argv[3]
-    
+
     create_saliency_nifti(my_nifti_input, saliency_output_file_path, model_file_path)
