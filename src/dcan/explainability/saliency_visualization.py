@@ -1,3 +1,41 @@
+def ensure_directory_exists(directory_path):
+    """
+    Ensure that a directory exists and is writable.
+    
+    This function checks if a directory exists and creates it if necessary.
+    It also verifies that the directory is writable.
+    
+    Parameters:
+        directory_path (str): Path to the directory to check/create.
+        
+    Returns:
+        None
+        
+    Raises:
+        PermissionError: If the directory cannot be created or is not writable.
+        IOError: If there's another issue with directory creation.
+    """
+    if not directory_path:
+        return  # No directory to create (current directory)
+        
+    # Check if directory exists
+    if not os.path.exists(directory_path):
+        try:
+            # Check if parent directory is writable before attempting to create
+            parent_dir = os.path.dirname(directory_path)
+            if parent_dir and not os.access(parent_dir, os.W_OK):
+                raise PermissionError(f"No write permission for parent directory: {parent_dir}")
+                
+            # Create directory
+            os.makedirs(directory_path, exist_ok=True)
+        except PermissionError as pe:
+            raise pe
+        except Exception as e:
+            raise IOError(f"Failed to create directory {directory_path}: {str(e)}")
+    
+    # Check write permissions on the directory
+    if not os.access(directory_path, os.W_OK):
+        raise PermissionError(f"No write permission for directory: {directory_path}")
 # Authors: Anders Perrone and Paul Reiners
 import gzip
 import os
@@ -130,10 +168,9 @@ def create_nifti(img, scaled_vector, saliency_output_file_name):
         None
     """
     try:
-        # Check output directory permissions
+        # Ensure output directory exists and is writable
         output_dir = os.path.dirname(saliency_output_file_name)
-        if output_dir and not os.access(output_dir, os.W_OK):
-            raise PermissionError(f"No write permission for directory: {output_dir}")
+        ensure_directory_exists(output_dir)
         
         # Check if output shapes match
         if img.shape != scaled_vector.shape:
@@ -182,13 +219,9 @@ def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_pat
         except Exception as load_error:
             raise ValueError(f"Failed to load input NIfTI file: {str(load_error)}")
         
-        # Create output directory if it doesn't exist
+        # Ensure output directory exists and is writable
         salience_output_directory_path = os.path.dirname(saliency_output_file_path)
-        if salience_output_directory_path:
-            try:
-                os.makedirs(salience_output_directory_path, exist_ok=True)
-            except Exception as dir_error:
-                raise IOError(f"Failed to create output directory: {str(dir_error)}")
+        ensure_directory_exists(salience_output_directory_path)
         
         # Compute saliency map
         array_data = compute_saliency(nifti_input, model_file_path)
@@ -258,11 +291,6 @@ def main():
         if not os.path.exists(model_file_path):
             print(f"Error: Model file not found: {model_file_path}")
             return 1
-            
-        # Create output directory if it doesn't exist
-        output_dir = os.path.dirname(saliency_output_file_path)
-        if output_dir:
-            os.makedirs(output_dir, exist_ok=True)
             
         # Process the NIfTI file
         create_saliency_nifti(my_nifti_input, saliency_output_file_path, model_file_path)
