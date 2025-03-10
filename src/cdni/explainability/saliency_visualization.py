@@ -1,3 +1,5 @@
+from dcan.models.ResNet import get_resnet_model
+
 def validate_args(input_path, output_path, model_path):
     """
     Validate command-line arguments for the script.
@@ -55,7 +57,9 @@ def validate_args(input_path, output_path, model_path):
         return False, f"Model file is not readable: {model_path}"
     
     # All checks passed
-    return True, Nonedef ensure_directory_exists(directory_path):
+    return True, None 
+
+def ensure_directory_exists(directory_path):
     """
     Ensure that a directory exists and is writable.
     
@@ -99,7 +103,6 @@ import os
 import shutil
 import sys
 import traceback
-from dcan.models.ResNet import get_resnet_model
 import nibabel as nib
 import numpy as np
 import torch.utils.data

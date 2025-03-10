@@ -79,29 +79,29 @@ def create_nifti(img, scaled_vector, saliency_output_file_name):
             shutil.copyfileobj(f_in, f_out)
     return nii_out_file
 
-def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_path):
-    """
-    Create a saliency map NIfTI file from an input NIfTI file using a pre-trained model.
+# def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_path):
+#     """
+#     Create a saliency map NIfTI file from an input NIfTI file using a pre-trained model.
     
-    This function loads the input image, computes its saliency map, normalizes and scales
-    the saliency values, and saves the result as a compressed NIfTI file.
+#     This function loads the input image, computes its saliency map, normalizes and scales
+#     the saliency values, and saves the result as a compressed NIfTI file.
     
-    Parameters:
-        nifti_input (str): Path to the input NIfTI file.
-        saliency_output_file_path (str): Path where the saliency map will be saved.
-        model_file_path (str): Path to the pre-trained model weights file.
+#     Parameters:
+#         nifti_input (str): Path to the input NIfTI file.
+#         saliency_output_file_path (str): Path where the saliency map will be saved.
+#         model_file_path (str): Path to the pre-trained model weights file.
         
-    Returns:
-        None
-    """
-    image = nib.load(nifti_input)
-    salience_output_directory_path = os.path.dirname(saliency_output_file_path)
-    os.makedirs(salience_output_directory_path, exist_ok=True)
-    shutil.copyfile(nifti_input, saliency_output_file_path)
-    array_data = compute_saliency(nifti_input, model_file_path)
-    normalized_vector = array_data / np.linalg.norm(array_data)
-    nii_out_fl = create_nifti(image, np.dot(normalized_vector, 256), saliency_output_file_path)
-    os.remove(nii_out_fl)
+#     Returns:
+#         None
+#     """
+#     image = nib.load(nifti_input)
+#     salience_output_directory_path = os.path.dirname(saliency_output_file_path)
+#     os.makedirs(salience_output_directory_path, exist_ok=True)
+#     shutil.copyfile(nifti_input, saliency_output_file_path)
+#     array_data = compute_saliency(nifti_input, model_file_path)
+#     normalized_vector = array_data / np.linalg.norm(array_data)
+#     nii_out_fl = create_nifti(image, np.dot(normalized_vector, 256), saliency_output_file_path)
+#     os.remove(nii_out_fl)
 
 if __name__ == '__main__':
     """

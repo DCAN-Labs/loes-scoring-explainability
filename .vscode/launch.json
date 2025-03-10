@@ -14,6 +14,16 @@
                      "/home/feczk001/shared/projects/S1067_Loes/data/Fairview-ag/saliency-maps/subject-00_session-00_space-MNI_brain_mprage_RAVEL.nii.gz",
                      "/home/feczk001/shared/data/LoesScoring/loes_scoring_20.pt"],
                      "env": {"PYTHONPATH":"/users/9/reine097/projects/loes-scoring-2/src"}
+        },
+        {
+            "name": "saliency_from_folder",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/cdni/explainability/saliency_from_folder.py",
+            "console": "integratedTerminal",
+            "args": ["/home/feczk001/shared/projects/S1067_Loes/data/MIDB-rp/05-Ravelized/",
+                     "/home/feczk001/shared/projects/S1067_Loes/data/MIDB-rp/saliency-maps/",
+                     "/home/feczk001/shared/data/LoesScoring/loes_scoring_20.pt"],
+                     "env": {"PYTHONPATH":"/users/9/reine097/projects/loes-scoring-explainability/src:/users/9/reine097/projects/loes-scoring-2/src"
         }
     ]
-}
