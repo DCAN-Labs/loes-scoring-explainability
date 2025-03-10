@@ -145,7 +145,7 @@ def create_nifti(img, scaled_vector, saliency_output_file_name):
         print(f"Error in create_nifti: {str(e)}")
         raise
 
-def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_path):
+def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_path, scaling_factor=256):
     """
     Create a saliency map NIfTI file from an input NIfTI file using a pre-trained model.
     
@@ -156,6 +156,9 @@ def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_pat
         nifti_input (str): Path to the input NIfTI file.
         saliency_output_file_path (str): Path where the saliency map will be saved.
         model_file_path (str): Path to the pre-trained model weights file.
+        scaling_factor (int, optional): Value to scale the normalized saliency map. 
+                                      Higher values make the saliency map more visible.
+                                      Default is 256 for 8-bit visualization.
         
     Returns:
         None
@@ -196,8 +199,10 @@ def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_pat
             else:
                 normalized_vector = array_data / norm
                 
-            # Create scaled vector matching input image dimensions
-            scaled_data = np.dot(normalized_vector, 256)
+            # Scale the normalized vector to a visible range
+            # The scaling factor determines the intensity range in the output image
+            # Default of 256 is suitable for 8-bit visualization tools
+            scaled_data = np.dot(normalized_vector, scaling_factor)
             
             # Create output NIfTI file (directly as compressed file)
             create_nifti(image, scaled_data, saliency_output_file_path)
@@ -216,6 +221,11 @@ def main():
     1. Path to the input NIfTI file
     2. Path where the saliency output will be saved
     3. Path to the pre-trained model weights file
+    
+    Optional arguments can be added in future versions:
+    - Scaling factor for saliency map intensity
+    - Output data type options
+    - Customization of saliency calculation parameters
     
     Returns:
         int: 0 for success, 1 for failure
