@@ -13,7 +13,10 @@ from captum.attr import Saliency
 
 def normalize_array(array):
     """
-    Normalize a torch tensor to the range [0, 1].
+    Normalize a torch tensor to the range [0, 1] using min-max normalization.
+    
+    This normalization is applied to the input image before feeding it to the model,
+    ensuring consistent input scale regardless of the original image intensity range.
     
     Parameters:
         array (torch.Tensor): Input tensor to be normalized.
@@ -45,6 +48,10 @@ def compute_saliency(nifti_input, model):
     This function loads a ResNet model, normalizes the input image, and
     computes the saliency map using Captum's Saliency method.
     
+    The input normalization (to [0,1] range) is necessary for the model to process
+    the image correctly, while the output saliency map will be normalized separately
+    later using L2 normalization.
+    
     Parameters:
         nifti_input (str): Path to the input NIfTI file.
         model (str): Path to the pre-trained model weights file.
@@ -61,8 +68,8 @@ def compute_saliency(nifti_input, model):
         if not os.path.exists(model):
             raise FileNotFoundError(f"Model file not found: {model}")
         
+        # Initialize model
         net = get_resnet_model()
-        net.eval()
         
         # Load image
         try:
@@ -81,6 +88,7 @@ def compute_saliency(nifti_input, model):
         except Exception as model_error:
             raise ValueError(f"Failed to load model weights: {str(model_error)}")
             
+        # Set model to evaluation mode
         net.eval()
         
         def wrapped_model(inp):
@@ -191,7 +199,9 @@ def create_saliency_nifti(nifti_input, saliency_output_file_path, model_file_pat
         
         # Normalize and scale saliency values
         try:
-            # Avoid division by zero
+            # L2 normalization of the saliency map
+            # This is different from the min-max normalization used for the input image
+            # L2 norm preserves the direction of gradients while standardizing their magnitude
             norm = np.linalg.norm(array_data)
             if norm == 0:
                 print("Warning: Saliency norm is zero, using unnormalized data")
