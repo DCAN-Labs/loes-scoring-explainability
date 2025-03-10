@@ -1,4 +1,61 @@
-def ensure_directory_exists(directory_path):
+def validate_args(input_path, output_path, model_path):
+    """
+    Validate command-line arguments for the script.
+    
+    This function performs comprehensive validation of all input arguments
+    to ensure they meet the requirements for processing.
+    
+    Parameters:
+        input_path (str): Path to the input NIfTI file.
+        output_path (str): Path where the saliency output will be saved.
+        model_path (str): Path to the pre-trained model weights file.
+        
+    Returns:
+        tuple: (is_valid, error_message) where is_valid is a boolean and
+               error_message is None if valid, otherwise contains error details.
+    """
+    # Validate input file
+    if not input_path:
+        return False, "Input file path cannot be empty"
+    
+    if not os.path.exists(input_path):
+        return False, f"Input NIfTI file not found: {input_path}"
+    
+    if not os.path.isfile(input_path):
+        return False, f"Input path is not a file: {input_path}"
+        
+    # Check if input file is readable
+    if not os.access(input_path, os.R_OK):
+        return False, f"Input file is not readable: {input_path}"
+        
+    # Validate input file extension for NIfTI format
+    if not (input_path.endswith('.nii') or input_path.endswith('.nii.gz')):
+        return False, f"Input file does not have a NIfTI extension (.nii or .nii.gz): {input_path}"
+    
+    # Validate output path
+    if not output_path:
+        return False, "Output file path cannot be empty"
+        
+    # Ensure output has correct extension
+    if not (output_path.endswith('.nii.gz')):
+        return False, f"Output file must have .nii.gz extension: {output_path}"
+    
+    # Validate model file
+    if not model_path:
+        return False, "Model file path cannot be empty"
+        
+    if not os.path.exists(model_path):
+        return False, f"Model file not found: {model_path}"
+        
+    if not os.path.isfile(model_path):
+        return False, f"Model path is not a file: {model_path}"
+        
+    # Check if model file is readable
+    if not os.access(model_path, os.R_OK):
+        return False, f"Model file is not readable: {model_path}"
+    
+    # All checks passed
+    return True, Nonedef ensure_directory_exists(directory_path):
     """
     Ensure that a directory exists and is writable.
     
@@ -277,6 +334,9 @@ def main():
         # Check if correct number of arguments are provided
         if len(sys.argv) != 4:
             print("Usage: python script.py <input_nifti> <output_path> <model_path>")
+            print("  <input_nifti>: Path to the input NIfTI file (.nii or .nii.gz)")
+            print("  <output_path>: Path where the saliency map will be saved (.nii.gz)")
+            print("  <model_path>: Path to the pre-trained model weights file")
             return 1
             
         my_nifti_input = sys.argv[1]
@@ -284,14 +344,16 @@ def main():
         model_file_path = sys.argv[3]
         
         # Validate arguments
-        if not os.path.exists(my_nifti_input):
-            print(f"Error: Input NIfTI file not found: {my_nifti_input}")
+        is_valid, error_message = validate_args(
+            my_nifti_input, 
+            saliency_output_file_path, 
+            model_file_path
+        )
+        
+        if not is_valid:
+            print(f"Error: {error_message}")
             return 1
-            
-        if not os.path.exists(model_file_path):
-            print(f"Error: Model file not found: {model_file_path}")
-            return 1
-            
+        
         # Process the NIfTI file
         create_saliency_nifti(my_nifti_input, saliency_output_file_path, model_file_path)
         
